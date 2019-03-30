@@ -1,7 +1,0 @@
-#include<vector>
-class RuleBook
-{
-
-
-
-}
