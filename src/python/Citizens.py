@@ -1,33 +1,33 @@
 from src.python.Rule import Rule
-from src.python.RuleBook import RuleBook
 from src.python.utilities import crypto_tools
 import ecdsa
 
 
 class Citizens:
-    class __Citizens:
-        def __init__(self, arg):
-            self.val = arg
-
-        def __str__(self):
-            return repr(self) + self.val
-    instance = None
-
     def __init__(self):
-        if not Citizens.instance:
-            Citizens.instance = Citizens.__Citizens(True)
-            self.citizens = []
-        else:
-            Citizens.instance.val = True
-
-    def __getattr__(self, name):
-        return getattr(self.instance, name)
+        self.citizens = []
+        self.rules = {}
 
     def is_citizen(self, citizen):
         if citizen not in self.citizens:
             return False
         else:
             return True
+
+    def add_rule(self, rule):
+        if rule.get_result(self)["result"]:
+            file_hash = crypto_tools.md5(rule.rule_descriptor_file)
+            self.rules.update({rule.rule_name: (file_hash, rule.rule_descriptor_file)})
+        else:
+            print("Vote has not won")
+
+    def remove_rule(self, rule):
+        if not rule.get_result(self)["result"]:
+            file_hash = crypto_tools.md5(rule.rule_descriptor_file)
+            self.rules.remove({rule.rule_name: (file_hash, rule.rule_descriptor_file)})
+
+    def get_rule(self, **kwargs):
+        pass
 
     @staticmethod
     def is_valid_citizen_format(self, citizen):
@@ -61,15 +61,6 @@ class Citizens:
 if __name__ == "__main__":
 
     citizens = Citizens()
-    x = RuleBook("eggs")
-    print(x)
-    y = RuleBook("sausage")
-    print(y)
-    z = RuleBook("cuc")
-    print(z)
-
-    print(x)
-    print(y)
 
     DS_key = crypto_tools.generate_citizen_pub_priv_key()
     DS = {"citizen_name": "David Simmons", "citizen_public_id": DS_key["citizen_public_id"]}
@@ -79,6 +70,9 @@ if __name__ == "__main__":
     citizens.add_citizen(DS)
     rule_murder = Rule("Murder", "/home/dave/git/lemo/rules/murder.txt")
     rule_theft = Rule("Theft", "/home/dave/git/lemo/rules/theft.txt")
+
+    citizens.add_rule(rule_murder)
+
     print(citizens.is_citizen(DS))
     vote = True
     murder_vote_signature = rule_murder.create_vote_signature(DS_key["citizen_private_id"], vote)
