@@ -71,24 +71,20 @@ if __name__ == "__main__":
     rule_murder = Rule("Murder", "/home/dave/git/lemo/rules/murder.txt")
     rule_theft = Rule("Theft", "/home/dave/git/lemo/rules/theft.txt")
 
-    citizens.add_rule(rule_murder)
-
     print(citizens.is_citizen(DS))
     vote = True
     murder_vote_signature = rule_murder.create_vote_signature(DS_key["citizen_private_id"], vote)
+    murder_vote2_signature = rule_murder.create_vote_signature(DS_key["citizen_private_id"], False)
     theft_vote_signature = rule_theft.create_vote_signature(DS_key["citizen_private_id"], vote)
 
     print(murder_vote_signature)
     print(theft_vote_signature)
 
     rule_murder.vote(citizens, DS, murder_vote_signature, vote)
+    print(rule_murder.get_result(citizens))
+    rule_murder.vote(citizens, DS, murder_vote2_signature, False)
     rule_theft.vote(citizens, DS, theft_vote_signature, vote)
 
     print(rule_murder.get_result(citizens))
-
-
-    print(citizens.citizens)
-    citizens.remove_citizen(DS)
-    print(citizens.citizens)
 
 
