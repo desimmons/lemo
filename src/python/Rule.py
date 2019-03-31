@@ -52,8 +52,6 @@ class Rule:
             print("Citizen trying to vote is not real citizen")
         elif type(vote) is not bool:
             print("Vote is not of type bool")
-        elif False:
-            pass
         elif vote_signature in self.signatures:
             print("This signature has already been used")
         else:
@@ -83,13 +81,13 @@ class Rule:
 
     def get_result(self, citizens):
         in_favour_ratio = self.yes_count / len(citizens.citizens)
+        number_of_votes = self.yes_count + self.no_count
         if in_favour_ratio > 0.5:
-            return {"in_favour_ratio": in_favour_ratio, "result": True}
+            return {"rule": self.rule_name, "number_of_votes": number_of_votes, "in_favour_ratio": in_favour_ratio,
+                    "result": True}
         else:
-            return {"in_favour_ratio": in_favour_ratio, "result": False}
-
-    def get_current_result(self, **kwargs):
-        pass
+            return {"rule": self.rule_name, "number_of_votes": number_of_votes, "in_favour_ratio": in_favour_ratio,
+                    "result": False}
 
 
 if __name__ == "__main__":

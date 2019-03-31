@@ -34,7 +34,7 @@ conda env create -f environment.yml
 To run an example:
 
 ```
-python ./src/python/Citizens.py
+python ./src/python/examples.py
 ```
 
 ## Running the tests
