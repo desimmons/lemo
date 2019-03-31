@@ -2,8 +2,8 @@ import hashlib
 import ecdsa
 
 
-def generate_citizen_pub_priv_key():
-    sk = ecdsa.SigningKey.generate(curve=ecdsa.SECP256k1)
+def generate_citizen_pub_priv_key(entropy):
+    sk = ecdsa.SigningKey.generate(curve=ecdsa.SECP256k1, entropy=entropy)
     vk = sk.get_verifying_key()
     print(sk, vk)
     return {"citizen_public_id": vk, "citizen_private_id": sk}

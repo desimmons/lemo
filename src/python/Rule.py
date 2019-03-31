@@ -49,11 +49,13 @@ class Rule:
     def vote(self, citizens, citizen, vote_signature, vote):
         # check signature and public key are valid
         if not citizens.is_citizen(citizen):
-            raise Exception("Citizen trying to vote is not real citizen")
+            print("Citizen trying to vote is not real citizen")
         elif type(vote) is not bool:
-            raise Exception("Vote is not of type bool")
+            print("Vote is not of type bool")
+        elif False:
+            pass
         elif vote_signature in self.signatures:
-            raise Exception("Vote has already been made")
+            print("This signature has already been used")
         else:
             message = bytes(str(vote)+str(self.rule_hash), 'utf-8')
             message_comp = bytes(str(not vote)+str(self.rule_hash), 'utf-8')
