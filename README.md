@@ -16,7 +16,7 @@ To run this project easily, [install miniconda](https://conda.io/projects/conda/
 Clone the GitHub repository into a local directory of your choice:
 
 ```
-git clone git@github.com:dsimmoAnyVision/lemo.git
+git clone git@github.com:desimmons/lemo.git
 ```
 
 Move into the cloned directory:
