@@ -68,16 +68,18 @@ class Rule:
                         original_signature = sig
                 except ecdsa.keys.BadSignatureError:
                     pass
-
-            if not vk.verify(vote_signature, message):
-                raise Exception("Invalid vote signature")
-            elif changing_vote:
-                self.signatures.append(vote_signature)
-                self.signatures.remove(original_signature)
-                self.__change_vote(vote)
-            else:
-                self.signatures.append(vote_signature)
-                self.__add_vote(vote)
+            try:
+                if not vk.verify(vote_signature, message):
+                    pass
+                elif changing_vote:
+                    self.signatures.append(vote_signature)
+                    self.signatures.remove(original_signature)
+                    self.__change_vote(vote)
+                else:
+                    self.signatures.append(vote_signature)
+                    self.__add_vote(vote)
+            except ecdsa.keys.BadSignatureError:
+                    print("Invalid vote signature. Vote not applied.")
 
     def get_result(self, citizens):
         in_favour_ratio = self.yes_count / len(citizens.citizens)

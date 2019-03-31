@@ -117,8 +117,8 @@ if __name__ == "__main__":
     print(rule_murder.get_result(citizens))
 
     print("DS decides to change his opinion about murder")
-    DS_murder_vote_sig = rule_murder.create_vote_signature(DS_key["citizen_private_id"], False)
-    rule_murder.vote(citizens, DS, DS_murder_vote_sig, False)
+    DS_murder_vote_sig = rule_murder.create_vote_signature(DS_key["citizen_private_id"], not DS_rule_murder_vote)
+    rule_murder.vote(citizens, DS, DS_murder_vote_sig, not DS_rule_murder_vote)
     print(rule_murder.get_result(citizens))
 
     print("All three citizens vote for theft")
