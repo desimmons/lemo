@@ -31,60 +31,46 @@ Create a Python environment with all the lemo dependencies installed using Conda
 conda env create -f environment.yml
 ```
 
+
+## Running the tests
+
+
 To run an example:
 
 ```
 python ./src/python/examples.py
 ```
 
-## Running the tests
+## What it does
 
-TODO: Explain how to run the automated tests for this system
-
-### Break down into end to end tests
-
-TODO: Explain what these tests test and why
-
-```
-Give an example
-```
-
-### And coding style tests
-
-TODO: Explain what these tests test and why
-
-```
-Give an example
-```
-
-## Deployment
-
-TODO: Add additional notes about how to deploy this on a live system
-
-## Built With
-
-TODO: 
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
-
-## Contributing
-
-TODO: Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
-
-## Versioning
-
-TODO: We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
+Lemocracy is a cryptographic implementation of a [liquid democracy](https://en.wikipedia.org/wiki/Delegative_democracy):
+ a direct democracy that allows citizens to delegate their vote to representatives of their choice. In detail, it 
+ allows us to create:
+1. A citizen, represented by a name and public key (of which there is a corresponding private key). The citizen's 
+public/private key pair is generated using ```jb_key = crypto_tools.generate_citizen_pub_priv_key(entropy=PRNG("seed"))```. 
+The citizen is then defined to be the dictionary ```joey_b = {"citizen_name": "Joe Blogs", 
+"citizen_public_id": key["citizen_public_id"]}```
+2. A Citizens class, that:
+    * issues citizenship via ```Citizens().add_citizen(joey_b)```. The Citizens object saves citizenship via an array 
+    of the citizen's public keys.
+    * allows its citizens to add and remove rule objects (the Rule class will be explained next) via 
+    ```Citizens().add_rule(rule_1)``` and ```Citizens().remove_rule(rule_1)```
+3. A Rule class that:
+    * instantiates rule objects using a rule file contained in the ```./rules``` directory,
+    * stores a cryptographic hash of the rule file so that any adjustment to the rule file will easy to spot,
+    * allows citizens to vote via the ```Rule().vote(citizens, joey_b, vote_signature, vote)``` method. 
+    For a citizen to be able to vote successfully, they **must**:
+        * be a citizen of the ```citizens``` object past to the ```vote``` method,
+        * construct a ```valid vote_signature``` object using their private key and their ```vote```, a boolean.
+ 
+## How it does it
+TODO
 
 ## Authors
 
-* **David Simmons** - [GitHub](https://github.com/desimmons)
+* **David Simmons** - [GitHub](https://github.com/desimmons), 
+[Scholar](https://scholar.google.co.uk/citations?user=_O77iwwAAAAJ&hl=en)
 
-TODO: See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
-
-## License
-
-TODO: This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
 
 ## TODO list
 
