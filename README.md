@@ -60,7 +60,7 @@ The citizen is then defined to be the dictionary ```joey_b = {"citizen_name": "J
     * stores a cryptographic hash of the rule file so that any adjustment to the rule file will easy to spot,
     * allows citizens to vote via the ```Rule().vote(citizens, joey_b, vote_signature, vote)``` method. 
     For a citizen to be able to vote successfully, they **must**:
-        * be a citizen of the ```citizens``` object past to the ```vote``` method,
+        * be a citizen of the ```citizens``` object passed to the ```vote``` method,
         * construct a ```valid vote_signature``` object using their private key and their ```vote```, a boolean.
  
 ## How it does it
