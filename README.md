@@ -8,7 +8,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-To run this project easily, [install miniconda](https://conda.io/projects/conda/en/latest/user-guide/install/index.html).
+To run this project easily, [install miniconda](https://l.facebook.com/l.php?u=https%3A%2F%2Fdocs.conda.io%2Fen%2Flatest%2Fminiconda.html%3Ffbclid%3DIwAR2oFLYDLJ1fuwJlRt6axzLuuEqAMBJtj0eqo3_OCm9iOkKie8sixUtro84&h=AT03C5J2NiyWNR8ogs5Ngzf8MKvGewBjDRa0_uLjQcEVA9O5h0-_E4gHlnGR-TJHodNq5F8W9JS4Ew605Qp32ZkYFUQlTg-qhjGTEnKOkQKjBkycrZyMQlKh8OjK8TTEiv9kmk4iLHs).
 
 
 ### Installing

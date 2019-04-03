@@ -23,7 +23,7 @@ def example_1():
     citizens.add_citizen(ts)
 
     print("Create two rules")
-    rule_murder = Rule("Murder", "/home/dave/git/lemo/rules/murder.txt")
+    rule_murder = Rule(citizens, "Murder", "/home/dave/git/lemo/rules/murder.txt")
 
     print("Define the opinions of each of the citizens on the rules")
     ds_rule_murder_vote = True
@@ -36,18 +36,18 @@ def example_1():
     ts_murder_vote_sig = rule_murder.create_vote_signature(ts_key["citizen_private_id"], ts_rule_murder_vote)
 
     print("Allow the citizens to vote")
-    rule_murder.vote(citizens, ds, ds_murder_vote_sig, ds_rule_murder_vote)
-    print(rule_murder.get_result(citizens))
-    rule_murder.vote(citizens, ts, ts_murder_vote_sig, ts_rule_murder_vote)
-    print(rule_murder.get_result(citizens))
+    rule_murder.vote(ds, ds_murder_vote_sig, ds_rule_murder_vote)
+    print(rule_murder.get_result())
+    rule_murder.vote(ts, ts_murder_vote_sig, ts_rule_murder_vote)
+    print(rule_murder.get_result())
     print("See that ns was not a member of Citizens so could not vote")
-    rule_murder.vote(citizens, ns, ns_murder_vote_sig, ns_rule_murder_vote)
-    print(rule_murder.get_result(citizens))
+    rule_murder.vote(ns, ns_murder_vote_sig, ns_rule_murder_vote)
+    print(rule_murder.get_result())
 
     print("Allow ns to become members of Citizens and vote")
     citizens.add_citizen(ns)
-    rule_murder.vote(citizens, ns, ns_murder_vote_sig, ns_rule_murder_vote)
-    print(rule_murder.get_result(citizens))
+    rule_murder.vote(ns, ns_murder_vote_sig, ns_rule_murder_vote)
+    print(rule_murder.get_result())
 
 
 def example_2():
@@ -70,7 +70,7 @@ def example_2():
     citizens.add_citizen(ns)
 
     print("Create a rule")
-    rule_murder = Rule("Murder", "/home/dave/git/lemo/rules/murder.txt")
+    rule_murder = Rule(citizens, "Murder", "/home/dave/git/lemo/rules/murder.txt")
 
     print("Define the opinions of each of the citizens on the rule")
     ds_rule_murder_vote = True
@@ -83,17 +83,17 @@ def example_2():
     ts_murder_vote_sig = rule_murder.create_vote_signature(ts_key["citizen_private_id"], ts_rule_murder_vote)
 
     print("Allow the citizens to vote")
-    rule_murder.vote(citizens, ds, ds_murder_vote_sig, ds_rule_murder_vote)
-    print(rule_murder.get_result(citizens))
-    rule_murder.vote(citizens, ts, ts_murder_vote_sig, ts_rule_murder_vote)
-    print(rule_murder.get_result(citizens))
-    rule_murder.vote(citizens, ns, ns_murder_vote_sig, ns_rule_murder_vote)
-    print(rule_murder.get_result(citizens))
+    rule_murder.vote(ds, ds_murder_vote_sig, ds_rule_murder_vote)
+    print(rule_murder.get_result())
+    rule_murder.vote(ts, ts_murder_vote_sig, ts_rule_murder_vote)
+    print(rule_murder.get_result())
+    rule_murder.vote(ns, ns_murder_vote_sig, ns_rule_murder_vote)
+    print(rule_murder.get_result())
 
     print("ds decides to change his opinion about murder")
     ds_murder_vote_sig = rule_murder.create_vote_signature(ds_key["citizen_private_id"], not ds_rule_murder_vote)
-    rule_murder.vote(citizens, ds, ds_murder_vote_sig, not ds_rule_murder_vote)
-    print(rule_murder.get_result(citizens))
+    rule_murder.vote(ds, ds_murder_vote_sig, not ds_rule_murder_vote)
+    print(rule_murder.get_result())
 
 
 def example_3():
@@ -113,7 +113,7 @@ def example_3():
     citizens.add_citizen(ts)
 
     print("Create two rules")
-    rule_murder = Rule("Murder", "/home/dave/git/lemo/rules/murder.txt")
+    rule_murder = Rule(citizens, "Murder", "/home/dave/git/lemo/rules/murder.txt")
 
     print("Define the opinions of each of the citizens on the rules")
     ds_rule_murder_vote = True
@@ -124,19 +124,22 @@ def example_3():
     ts_murder_vote_sig = rule_murder.create_vote_signature(ts_key["citizen_private_id"], ts_rule_murder_vote)
 
     print("Allow the citizens to vote")
-    rule_murder.vote(citizens, ds, ds_murder_vote_sig, ds_rule_murder_vote)
-    print(rule_murder.get_result(citizens))
-    rule_murder.vote(citizens, ts, ts_murder_vote_sig, ts_rule_murder_vote)
-    print(rule_murder.get_result(citizens))
+    rule_murder.vote(ds, ds_murder_vote_sig, ds_rule_murder_vote)
+    print(rule_murder.get_result())
+    rule_murder.vote(ts, ts_murder_vote_sig, ts_rule_murder_vote)
+    print(rule_murder.get_result())
 
     print("ds tries to vote again")
-    rule_murder.vote(citizens, ds, ds_murder_vote_sig, ds_rule_murder_vote)
+    rule_murder.vote(ds, ds_murder_vote_sig, ds_rule_murder_vote)
 
 
 def example_4():
     print("\nexample_4():\n\nThis verifies citizens cannot introduce fraudulent signatures to vote more than once\n\n" +
           "Define a Citizens object, which allows citizens to be members and vote")
     citizens = Citizens.Citizens()
+    print("Create two rules")
+    rule_murder = Rule(citizens, "Murder", "/home/dave/git/lemo/rules/murder.txt")
+    rule_theft = Rule(citizens, "Theft", "/home/dave/git/lemo/rules/theft.txt")
 
     print("Define three citizens ds, ts, and ns")
     ds_key = crypto_tools.generate_citizen_pub_priv_key(entropy=PRNG("1"))
@@ -149,10 +152,6 @@ def example_4():
     print("Allow ds and ts to become members of Citizens")
     citizens.add_citizen(ds)
     citizens.add_citizen(ts)
-
-    print("Create two rules")
-    rule_murder = Rule("Murder", "/home/dave/git/lemo/rules/murder.txt")
-    rule_theft = Rule("Theft", "/home/dave/git/lemo/rules/theft.txt")
 
     print("Define the opinions of each of the citizens on the rules")
     ds_rule_murder_vote = True
@@ -173,39 +172,39 @@ def example_4():
     ts_theft_vote_sig = rule_theft.create_vote_signature(ts_key["citizen_private_id"], ts_rule_theft_vote)
 
     print("Allow the citizens to vote")
-    rule_murder.vote(citizens, ds, ds_murder_vote_sig, ds_rule_murder_vote)
-    print(rule_murder.get_result(citizens))
-    rule_murder.vote(citizens, ts, ts_murder_vote_sig, ts_rule_murder_vote)
-    print(rule_murder.get_result(citizens))
+    rule_murder.vote(ds, ds_murder_vote_sig, ds_rule_murder_vote)
+    print(rule_murder.get_result())
+    rule_murder.vote(ts, ts_murder_vote_sig, ts_rule_murder_vote)
+    print(rule_murder.get_result())
 
     print("ds tries to vote again")
-    rule_murder.vote(citizens, ds, ds_murder_vote_sig, ds_rule_murder_vote)
+    rule_murder.vote(ds, ds_murder_vote_sig, ds_rule_murder_vote)
 
     print("See that ns was not a member of Citizens so could not vote")
-    rule_murder.vote(citizens, ns, ns_murder_vote_sig, ns_rule_murder_vote)
-    print(rule_murder.get_result(citizens))
+    rule_murder.vote(ns, ns_murder_vote_sig, ns_rule_murder_vote)
+    print(rule_murder.get_result())
 
     print("Allow ns to become members of Citizens and vote")
     citizens.add_citizen(ns)
-    rule_murder.vote(citizens, ns, ns_murder_vote_sig, ns_rule_murder_vote)
-    print(rule_murder.get_result(citizens))
+    rule_murder.vote(ns, ns_murder_vote_sig, ns_rule_murder_vote)
+    print(rule_murder.get_result())
 
     print("ds decides to change his opinion about murder")
     ds_murder_vote_sig = rule_murder.create_vote_signature(ds_key["citizen_private_id"], not ds_rule_murder_vote)
-    rule_murder.vote(citizens, ds, ds_murder_vote_sig, not ds_rule_murder_vote)
-    print(rule_murder.get_result(citizens))
+    rule_murder.vote(ds, ds_murder_vote_sig, not ds_rule_murder_vote)
+    print(rule_murder.get_result())
 
     print("All three citizens vote for theft")
-    rule_theft.vote(citizens, ds, ds_theft_vote_sig, ds_rule_theft_vote)
-    print(rule_theft.get_result(citizens))
-    rule_theft.vote(citizens, ns, ns_theft_vote_sig, ns_rule_theft_vote)
-    print(rule_theft.get_result(citizens))
-    rule_theft.vote(citizens, ts, ts_theft_vote_sig, ts_rule_theft_vote)
-    print(rule_theft.get_result(citizens))
+    rule_theft.vote(ds, ds_theft_vote_sig, ds_rule_theft_vote)
+    print(rule_theft.get_result())
+    rule_theft.vote(ns, ns_theft_vote_sig, ns_rule_theft_vote)
+    print(rule_theft.get_result())
+    rule_theft.vote(ts, ts_theft_vote_sig, ts_rule_theft_vote)
+    print(rule_theft.get_result())
 
     print("ns tries (and fails) to apply her theft sig to murder vote to cheat system")
-    rule_murder.vote(citizens, ns, ns_theft_vote_sig, ns_rule_theft_vote)
-    print(rule_theft.get_result(citizens))
+    rule_murder.vote(ns, ns_theft_vote_sig, ns_rule_theft_vote)
+    print(rule_theft.get_result())
 
 
 if __name__ == "__main__":

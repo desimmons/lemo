@@ -4,13 +4,14 @@ import ecdsa
 
 class Rule:
 
-    def __init__(self, rule_name, rule_descriptor_file):
+    def __init__(self, citizens, rule_name, rule_descriptor_file):
         self.rule_name = rule_name  # TODO: Check existence
         self.rule_descriptor_file = rule_descriptor_file
         self.rule_hash = crypto_tools.md5(self.rule_descriptor_file)
         self.yes_count = 0
         self.no_count = 0
         self.signatures = []
+        self.citizens = citizens
 
     def __str__(self):
         return repr(self) + ": " + self.rule_name
@@ -46,9 +47,9 @@ class Rule:
         signed_vote = sk.sign_deterministic(message)
         return signed_vote
 
-    def vote(self, citizens, citizen, vote_signature, vote):
+    def vote(self, citizen, vote_signature, vote):
         # check signature and public key are valid
-        if not citizens.is_citizen(citizen):
+        if not self.citizens.is_citizen(citizen):
             print("Citizen trying to vote is not real citizen")
         elif type(vote) is not bool:
             print("Vote is not of type bool")
@@ -79,8 +80,8 @@ class Rule:
             except ecdsa.keys.BadSignatureError:
                     print("Invalid vote signature. Vote not applied.")
 
-    def get_result(self, citizens):
-        in_favour_ratio = self.yes_count / len(citizens.citizens)
+    def get_result(self):
+        in_favour_ratio = self.yes_count / len(self.citizens.citizens)
         number_of_votes = self.yes_count + self.no_count
         if in_favour_ratio > 0.5:
             return {"rule": self.rule_name, "number_of_votes": number_of_votes, "in_favour_ratio": in_favour_ratio,
